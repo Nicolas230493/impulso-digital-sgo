@@ -204,6 +204,23 @@ await test('Clic fuera del contenido cierra el lightbox', async () => {
   assert(await home.$eval('#lightbox', (d) => d.classList.contains('hidden')), 'No cierra');
 });
 
+await test('Galería: miniaturas livianas y el lightbox abre la imagen en alta resolución', async () => {
+  const n = await home.$$eval('#galeria-grid [data-lightbox]', (b) => b.length);
+  if (!n) return; // galería no publicada
+  const minis = await home.$$eval('#galeria-grid img', (imgs) => imgs.map((i) => i.getAttribute('src')));
+  assert(minis.every((s) => s.endsWith('-mini.webp')), 'La grilla no usa miniaturas');
+  await home.click('#galeria-grid article:nth-child(5) [data-lightbox]');
+  await home.waitForSelector('#lightbox-content img');
+  const big = await home.$eval('#lightbox-content img', (i) => i.getAttribute('src'));
+  assert(!big.includes('-mini') && big.endsWith('.webp'), `Abre ${big}`);
+  await home.keyboard.press('Escape');
+});
+await test('Filtros de galería solo si hay más de un tipo de contenido', async () => {
+  const tipos = await home.$$eval('#galeria-grid .filterable', (e) => new Set(e.map((x) => x.dataset.category)).size);
+  const filtros = await home.$$eval('.filter-btn[data-target=galeria]', (b) => b.length);
+  assert(tipos > 1 ? filtros > 0 : filtros === 0, `${tipos} tipos y ${filtros} filtros`);
+});
+
 console.log('\nFormulario');
 await test('Validación: campos obligatorios, mensajes y foco en el primer error', async () => {
   await home.$eval('#contact-form', (f) => f.reset());

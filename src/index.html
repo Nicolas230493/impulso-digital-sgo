@@ -409,14 +409,17 @@
                     <p class="section-kicker">Galería</p>
                     <h2 id="galeria-title" class="section-title">Nuestro trabajo en imágenes</h2>
                     <div class="section-bar"></div>
+                    <p class="text-slate-300 max-w-xl text-sm leading-relaxed">Identidad de marca, publicidad y contenido para redes que diseñamos para emprendimientos y comercios.</p>
                 </div>
+                <!--IF galleryFilters-->
                 <div class="flex flex-wrap gap-2 bg-cyber-card p-1.5 rounded-full border border-cyber-border shadow-lg" role="group" aria-label="Filtrar galería">
                     <button type="button" class="filter-btn" data-filter="all" data-target="galeria" aria-pressed="true">Todo</button>
                     <button type="button" class="filter-btn" data-filter="imagen" data-target="galeria" aria-pressed="false">Imágenes</button>
                     <button type="button" class="filter-btn" data-filter="video" data-target="galeria" aria-pressed="false">Videos</button>
                 </div>
+                <!--ENDIF-->
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="galeria-grid">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6" id="galeria-grid">
                 {{GALLERY}}
             </div>
         </div>

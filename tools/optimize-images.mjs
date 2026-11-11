@@ -1,6 +1,7 @@
 // Optimiza imágenes (IMG-004 / PERF-004):
 //   src/images/originales/<ruta>/<archivo>.(jpg|jpeg|png)  →  src/images/<ruta>/<archivo>.webp
 // Redimensiona a un máximo de 1600 px de ancho y comprime en WebP calidad 80.
+// Además genera <archivo>-mini.webp (480 px) que el build usa como miniatura en grillas.
 // Al final imprime ancho y alto de cada imagen para cargarlos en src/data/contenido.mjs.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -11,6 +12,7 @@ const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const IN = path.join(ROOT, 'src/images/originales');
 const OUT = path.join(ROOT, 'src/images');
 const MAX_W = 1600;
+const MINI_W = 480;
 
 if (!fs.existsSync(IN)) {
   fs.mkdirSync(IN, { recursive: true });
@@ -26,8 +28,9 @@ for (const rel of files) {
   const dest = path.join(OUT, rel.replace(/\.(jpe?g|png)$/i, '.webp'));
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   const info = await sharp(src).rotate().resize({ width: MAX_W, withoutEnlargement: true }).webp({ quality: 80 }).toFile(dest);
+  const mini = await sharp(src).rotate().resize({ width: MINI_W, withoutEnlargement: true }).webp({ quality: 75 }).toFile(dest.replace(/\.webp$/, '-mini.webp'));
   const before = fs.statSync(src).size;
   console.log(
-    `✔ /images/${path.relative(OUT, dest)}  ${info.width}×${info.height}  ${(before / 1024).toFixed(0)} KB → ${(info.size / 1024).toFixed(0)} KB`,
+    `✔ /images/${path.relative(OUT, dest)}  ${info.width}×${info.height}  ${(before / 1024).toFixed(0)} KB → ${(info.size / 1024).toFixed(0)} KB  (mini ${(mini.size / 1024).toFixed(0)} KB)`,
   );
 }

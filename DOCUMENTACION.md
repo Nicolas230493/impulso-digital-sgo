@@ -9,7 +9,7 @@ Los archivos originales están intactos en `respaldo-original/`.
 npm install        # una sola vez
 npm run dev        # build + servidor local en http://localhost:8080 (se reconstruye al guardar)
 npm run build      # genera dist/ (lo que se publica)
-npm test           # build + 36 pruebas automáticas (navegación, formulario, a11y, seguridad…)
+npm test           # build + 38 pruebas automáticas (navegación, formulario, a11y, seguridad…)
 npm run images     # optimiza fotos: src/images/originales/*.jpg|png → WebP
 npm run og         # regenera la imagen para redes y la captura del sitio
 ```
@@ -60,7 +60,10 @@ cuando hay elementos**. Los videos requieren `poster` (imagen de respaldo, VID-0
 build los omite.
 
 **Imágenes**: copiar los originales en `src/images/originales/` y ejecutar `npm run images`.
-Se generan versiones WebP de hasta 1600 px y se imprimen sus dimensiones para el `contenido.mjs`.
+Se generan versiones WebP de hasta 1600 px más una miniatura `-mini.webp` de 480 px, y se imprimen
+sus dimensiones para el `contenido.mjs`. La grilla usa la miniatura y el lightbox, la imagen grande.
+Para logos u otras piezas que no deben recortarse, agregar `encuadre: 'contener'`.
+Los filtros de la galería (Imágenes/Videos) aparecen solo cuando hay de los dos tipos.
 
 ## Qué se modificó, por fase
 
@@ -146,7 +149,7 @@ Se generan versiones WebP de hasta 1600 px y se imprimen sus dimensiones para el
 | Tecnologías con las que se construyó Impulso Smart | `src/data/contenido.mjs` |
 | Capturas reales de Impulso Smart (hoy hay una ilustración) | `src/images/proyectos/` y `contenido.mjs` |
 | Proyectos reales de datos, ciberseguridad y otros | `src/data/contenido.mjs` |
-| Fotos y videos para la galería | `src/images/galeria/`, `src/videos/` y `contenido.mjs` |
+| Galería: hay 12 piezas de diseño de clientes, recuperadas del repo anterior. Sumar videos o fotos del equipo si se quiere | `src/images/originales/galeria/`, `src/videos/` y `contenido.mjs` |
 | Revisar textos de misión, visión y propuesta de valor (son una propuesta) | `src/index.html`, sección `#nosotros` |
 | Confirmar WhatsApp **+54 11** (Buenos Aires) frente a la ubicación en Santiago del Estero | `site.config.json` |
 | Recomendado: correo con dominio propio en lugar de Gmail personal | `site.config.json` → `email` |

@@ -142,7 +142,10 @@ function renderGalleryItem(g) {
     warn(`Galería: no existe ${g.src}; el elemento se omite.`);
     return '';
   }
-  const thumb = g.tipo === 'video' ? g.poster : g.src;
+  let thumb = g.tipo === 'video' ? g.poster : g.src;
+  const mini = thumb.replace(/\.webp$/, '-mini.webp');
+  if (mini !== thumb && localFileExists(mini)) thumb = mini;
+  const fit = g.encuadre === 'contener' ? 'object-contain p-3 sm:p-6 bg-cyber-bg' : 'object-cover object-top';
   if (g.tipo === 'video' && (!g.poster || !localFileExists(g.poster))) {
     warn(`Galería: el video ${g.src} no tiene poster válido (VID-002); el elemento se omite.`);
     return '';
@@ -150,18 +153,18 @@ function renderGalleryItem(g) {
   const isVideo = g.tipo === 'video';
   return `<article class="filterable bg-cyber-card rounded-2xl overflow-hidden neon-border" data-group="galeria" data-category="${g.tipo}">
       <button type="button" class="block w-full text-left group" data-lightbox data-type="${isVideo ? 'video' : 'image'}" data-src="${esc(g.src)}"${isVideo ? ` data-poster="${esc(g.poster)}"` : ''} data-title="${esc(g.titulo)}" data-alt="${esc(g.alt || g.titulo)}" aria-label="${isVideo ? 'Reproducir video' : 'Ampliar imagen'}: ${esc(g.titulo)}">
-        <span class="relative block overflow-hidden aspect-[4/3] bg-slate-900">
-          <img src="${esc(thumb)}" alt="${esc(g.alt || g.titulo)}" width="${g.ancho || 800}" height="${g.alto || 600}" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        <span class="relative block overflow-hidden aspect-[4/5] bg-slate-900">
+          <img src="${esc(thumb)}" alt="${esc(g.alt || g.titulo)}" width="${g.ancho || 800}" height="${g.alto || 600}" loading="lazy" decoding="async" class="w-full h-full ${fit} transition-transform duration-500 group-hover:scale-105">
           <span class="absolute inset-0 bg-cyber-bg/40 flex items-center justify-center ${isVideo ? '' : 'opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100'} transition-opacity">
             <span class="bg-cyber-cyan text-black rounded-full p-4 shadow-xl transition-transform group-hover:scale-110"><i class="fa-solid ${isVideo ? 'fa-play' : 'fa-expand'} text-xs"></i></span>
           </span>
         </span>
-        <span class="p-4 flex items-center justify-between gap-3">
+        <span class="p-3 sm:p-4 flex items-center justify-between gap-3">
           <span>
             <span class="text-[10px] font-bold text-cyber-cyan uppercase tracking-widest block">${esc(g.categoria || (isVideo ? 'Video' : 'Imagen'))}</span>
             <span class="text-sm font-bold text-white">${esc(g.titulo)}</span>
           </span>
-          <i class="${isVideo ? 'fa-solid fa-video' : 'fa-regular fa-image'} text-slate-400 text-sm"></i>
+          <i class="${isVideo ? 'fa-solid fa-video' : 'fa-regular fa-image'} text-slate-400 text-sm hidden sm:inline-block"></i>
         </span>
       </button>
     </article>`;
@@ -253,10 +256,17 @@ function buildSprite(used) {
 const RAW_KEYS = new Set(['JSON_LD', 'PROJECTS', 'GALLERY', 'ICON_SPRITE']);
 
 function renderTemplate(html, ctx, flags, cfg) {
-  html = html.replace(/[ \t]*<!--IF (\w+)-->\n?([\s\S]*?)[ \t]*<!--ENDIF-->\n?/g, (_m, flag, body) => {
-    if (!(flag in flags)) throw new Error(`Condición desconocida en plantilla: ${flag}`);
-    return flags[flag] ? body : '';
-  });
+  // Resuelve primero los bloques más internos (el cuerpo no contiene otro IF), para permitir anidamiento.
+  const IF_RE = /[ \t]*<!--IF (\w+)-->\n?((?:(?!<!--IF )[\s\S])*?)[ \t]*<!--ENDIF-->\n?/g;
+  let prev;
+  do {
+    prev = html;
+    html = html.replace(IF_RE, (_m, flag, body) => {
+      if (!(flag in flags)) throw new Error(`Condición desconocida en plantilla: ${flag}`);
+      return flags[flag] ? body : '';
+    });
+  } while (html !== prev);
+  if (/<!--(IF \w+|ENDIF)-->/.test(html)) throw new Error('Plantilla con IF/ENDIF sin cerrar o desbalanceado');
   html = html.replace(/\{\{wa:([^}]+)\}\}/g, (_m, text) => esc(`https://wa.me/${cfg.whatsapp}?text=${encodeURIComponent(text.trim())}`));
   html = html.replace(/\{\{([\w.]+)\}\}/g, (_m, key) => {
     const v = get(ctx, key);
@@ -403,6 +413,7 @@ async function build() {
     gaMeasurementId: !!cfg.gaMeasurementId,
     impulsoSmartUrl: !!cfg.impulsoSmartUrl,
     gallery: galleryHtml.length > 0,
+    galleryFilters: new Set(galeria.map((g) => g.tipo)).size > 1,
   };
   const ctx = {
     ...cfg,
