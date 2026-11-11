@@ -1,0 +1,20 @@
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cyan-grad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#06B6D4"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="50" r="40" fill="url(#cyan-grad)" opacity="0.2"/>
+  <g transform="translate(10, 10)">
+    <path d="M22 58C17 58 13 63 10 70C18 70 23 66 22 58Z" fill="#06B6D4"/>
+    <path d="M16 64C12 64 9 68 7 73C13 73 17 70 16 64Z" fill="#38BDF8"/>
+    <path d="M22 52L12 55L18 43L22 52Z" fill="#1E40AF"/>
+    <path d="M38 36L41 26L29 32L38 36Z" fill="#1E40AF"/>
+    <path d="M20 50C25 40 35 25 55 15C65 10 70 8 70 8C70 8 68 13 63 23C53 43 38 53 28 58C25 59.5 22 57 20 50Z" fill="#2563EB"/>
+    <path d="M25 48C29 39 38 26 54 18C42 28 32 40 26 50C25.5 49.5 25 49 25 48Z" fill="#60A5FA"/>
+    <circle cx="45" cy="32" r="6" fill="#06B6D4" stroke="#FFFFFF" stroke-width="2"/>
+    <path d="M35 45L40 40" stroke="#93C5FD" stroke-width="2" stroke-linecap="round"/>
+    <path d="M47 38L52 33" stroke="#93C5FD" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>

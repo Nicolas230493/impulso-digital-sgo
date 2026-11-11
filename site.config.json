@@ -1,0 +1,33 @@
+{
+  "_ayuda": "Datos del sitio. Completar los campos vacios y ejecutar `npm run build`. Ver DOCUMENTACION.md.",
+
+  "siteUrl": "",
+  "_siteUrl": "Dominio definitivo con https y sin barra final, ej: https://www.impulsodigitalsgo.com.ar. Activa canonical, Open Graph absolutos, sitemap.xml y Schema.org.",
+
+  "formspreeId": "",
+  "_formspreeId": "ID del formulario de Formspree (la parte final de https://formspree.io/f/XXXXXXX). Sin esto el formulario deriva la consulta a WhatsApp.",
+
+  "googleSiteVerification": "",
+  "_googleSiteVerification": "Token de verificacion de Google Search Console (metodo 'etiqueta HTML'). Opcional si se verifica por DNS.",
+
+  "gaMeasurementId": "",
+  "_gaMeasurementId": "ID de Google Analytics 4 (G-XXXXXXX) para seguimiento de conversiones. Opcional.",
+
+  "businessName": "Impulso Digital SGO",
+  "email": "danisegovia1234555@gmail.com",
+  "whatsapp": "541154778514",
+  "whatsappDisplay": "+54 11 5477-8514",
+  "city": "Santiago del Estero",
+  "region": "Santiago del Estero",
+  "country": "AR",
+
+  "social": {
+    "facebook": "https://www.facebook.com/profile.php?id=61585123510319",
+    "instagram": "https://www.instagram.com/impulsodigitalsgo/",
+    "linkedin": "https://www.linkedin.com/company/110160428/",
+    "tiktok": "https://www.tiktok.com/@impulsodigitalsgo1"
+  },
+
+  "impulsoSmartUrl": "",
+  "_impulsoSmartUrl": "URL publica de la version web de Impulso Smart. Si se completa, se agrega el boton 'Ir a Impulso Smart'."
+}

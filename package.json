@@ -1,0 +1,23 @@
+{
+  "name": "impulso-digital-sgo",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Sitio corporativo de Impulso Digital SGO",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node build.mjs --serve",
+    "images": "node tools/optimize-images.mjs",
+    "og": "node tools/generate-og.mjs",
+    "test": "node build.mjs && node tools/test.mjs"
+  },
+  "devDependencies": {
+    "@fontsource-variable/plus-jakarta-sans": "5.2.8",
+    "@fortawesome/fontawesome-free": "6.7.2",
+    "axe-core": "4.10.3",
+    "esbuild": "0.25.12",
+    "puppeteer-core": "24.22.0",
+    "sharp": "0.34.4",
+    "tailwindcss": "3.4.18"
+  }
+}

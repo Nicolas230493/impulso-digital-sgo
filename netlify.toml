@@ -1,0 +1,16 @@
+# Configuración de despliegue en Netlify.
+# Las cabeceras de seguridad (CSP, HSTS, etc.) y de caché se generan en dist/_headers
+# durante el build, a partir de site.config.json.
+
+[build]
+  command = "npm ci && npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# La URL anterior del sitio redirige a la portada.
+[[redirects]]
+  from = "/impulso_digital_sgo_tech_premium_dark.html"
+  to = "/"
+  status = 301
